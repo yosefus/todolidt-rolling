@@ -14,6 +14,11 @@ function App() {
     const task = { text, isDone: false, id: `${Math.random()}` }
     setTodolist(prev => [task, ...prev])
   }
+  //  1. בכל הוספת/הסרת משימה - לסכום מחדש את כמות האות e בכל ה-todos.
+
+  //2.  בפעם הראשונה - טענו מהlocalStorage את הtodos
+
+  //3. בכל שינוי בקומפוננטה הדפיסו "חותמת זמן" של הפעולה , בונוס : לתעד את סוג השינוי שנעשה
 
   const handleDone = (id) =>
     setTodolist(prev =>
