@@ -1,10 +1,29 @@
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
+
+// function father() {
+//   let a = {}
+//   let f = {}
+
+//   function son() {
+//     co
+//     let b = {}
+//     console.log();
+
+//   }
+
+//   son()
+//   son()
+//   son()
+//   son()
+// }
+
 function App() {
-  const [todolist, setTodolist] = useState([])
+  const [todolist, setTodolist] = useState(localStorage.listOfTasks ? JSON.parse(localStorage.listOfTasks) : [])
   const [text, setText] = useState('')
+  const [countE, setCountE] = useState(0)
 
   const listOfNotDone = todolist.filter(task => !task.isDone)
   const listOfDone = todolist.filter(task => task.isDone)
@@ -14,11 +33,29 @@ function App() {
     const task = { text, isDone: false, id: `${Math.random()}` }
     setTodolist(prev => [task, ...prev])
   }
-  //  1. בכל הוספת/הסרת משימה - לסכום מחדש את כמות האות e בכל ה-todos.
 
-  //2.  בפעם הראשונה - טענו מהlocalStorage את הtodos
+  useEffect(() => {
+    // what to do
+    let eInList = 0
+    for (const task of todolist) {
+      for (const letter of task.text) {
+        if (letter === 'e') eInList++
+      }
+    }
+    setCountE(eInList);
 
-  //3. בכל שינוי בקומפוננטה הדפיסו "חותמת זמן" של הפעולה , בונוס : לתעד את סוג השינוי שנעשה
+    // listen to
+  }, [todolist.length])
+
+  useEffect(() => {
+    console.log('on change of list');
+    localStorage.listOfTasks = JSON.stringify(todolist)
+  }, [todolist])
+
+  useEffect(() => {
+    console.log('on change of text\n', new Date);
+  }, [text])
+
 
   const handleDone = (id) =>
     setTodolist(prev =>
@@ -40,8 +77,10 @@ function App() {
           value={text}
           onChange={e => setText(e.target.value)}
         />
+        <input type="date" name="" id="" />
         <button type='submit'>create</button>
       </form>
+      <p>e in tasks is : {countE}</p>
 
       <ul className='not-done list'>
         {listOfNotDone.map((task, i) =>
